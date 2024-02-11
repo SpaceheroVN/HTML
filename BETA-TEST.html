@@ -66,7 +66,19 @@
 
       function playVideo() {
         document.querySelector(".nút").style.display = "none";
-        document.getElementById("video").style.display = "block";
+        document.getElementById("test").style.display = "none";
+        var video = document.getElementById("video");
+        video.style.display = "block";
+        video.play();
+        if (video.requestFullscreen) {
+          video.requestFullscreen();
+        } else if (video.mozRequestFullScreen) { /* Firefox */
+          video.mozRequestFullScreen();
+        } else if (video.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+          video.webkitRequestFullscreen();
+        } else if (video.msRequestFullscreen) { /* IE/Edge */
+          video.msRequestFullscreen();
+        }
       }
     </script>
   </body>
