@@ -37,16 +37,29 @@
   .nút:hover{
       opacity: 0.8;
   }
+  #loadingBar {
+      width: 100%;
+      background-color: #ddd;
+      display: none;
+  }
+  #progress {
+      width: 0;
+      height: 30px;
+      background-color: #4CAF50;
+  }
   </style>
   </head>
   <body style="background-color: black;">
     <div id="test"></div>
+    <div id="loadingBar">
+      <div id="progress"></div>
+    </div>
     <div>
       <a id="link">
         <button class="nút" onclick="playVideo()">ĐỪNG BẤM VÀO</button>
       </a>
       <video id="video" style="display: none;" autoplay>
-        <source src="troll.mp4">
+        <source src="https://rr4---sn-a5meknzr.googlevideo.com/videoplayback?expire=1707678172&ei=fMXIZeeINKPlsfIPrZ21-AU&ip=172.98.87.140&id=o-AGMnn_eICpaXDG2dvCtpKHyKyQFHiJChHS2vuNfvuyM0&itag=22&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=7c&mm=31%2C29&mn=sn-a5meknzr%2Csn-a5m7lnl6&ms=au%2Crdu&mv=m&mvi=4&pl=26&initcwndbps=1680000&vprv=1&svpuc=1&mime=video%2Fmp4&cnr=14&ratebypass=yes&dur=212.091&lmt=1706254927528878&mt=1707656202&fvip=1&fexp=24007246&c=ANDROID&txp=4532434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cvprv%2Csvpuc%2Cmime%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AJfQdSswRgIhAMz2Xax_HGpDvG5GKCD5MPZT2CFLsOWXiUAKwAUdRMnfAiEApBebBF_92z-fOYu3oplLrCuqW_Szun51o3IdpNIdcVQ%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AAO5W4owRQIgL4jM-S4Stz5tIy4H_wMDeItKgHJ6Ld8FphFs7LQoVykCIQDd7S9443eAq7pVMWBTkXtiPGlmGq204pQw5QCU8xw22g%3D%3D&title=Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up%20(Official%20Music%20Video)">
       </video>
     </div>
     <script>
@@ -74,10 +87,23 @@
           video.requestFullscreen();
         } else if (video.mozRequestFullScreen) { /* Firefox */
           video.mozRequestFullScreen();
-        } else if (video.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        } else if (video.webkitRequestFullscreen) { /* Chrome */
           video.webkitRequestFullscreen();
-        } else if (video.msRequestFullscreen) { /* IE/Edge */
+        } else if (video.msRequestFullscreen) { /* Edge */
           video.msRequestFullscreen();
+        }
+        document.getElementById("loadingBar").style.display = "block";
+        video.addEventListener('progress', updateProgress);
+      }
+
+      function updateProgress() {
+        var video = document.getElementById("video");
+        var progress = document.getElementById("progress");
+        var percent = 100 * video.buffered.end(0) / video.duration;
+        progress.style.width = percent + "%";
+        if (percent == 100) {
+          video.removeEventListener('progress', updateProgress);
+          document.getElementById("loadingBar").style.display = "none";
         }
       }
     </script>
